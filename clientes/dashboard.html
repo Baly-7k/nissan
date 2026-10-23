@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Nissan Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/dashboard.js" defer></script>
+</head>
+<body class="bg-gray-100">
+  <div class="min-h-screen flex bg-gray-100">
+    <aside class="sidebar w-64 bg-white shadow-md flex flex-col fixed h-full z-10">
+      <div class="p-6 bg-black text-white text-xl font-black uppercase tracking-widest text-center">Nissan</div>
+      <nav class="flex flex-col flex-grow p-4 space-y-2">
+        <button data-seccion="garaje" class="nav-btn active w-full text-left px-4 py-3 rounded font-bold transition-colors">🚗 Mi Garaje Nissan</button>
+        <button data-seccion="clientes" class="nav-btn w-full text-left px-4 py-3 rounded font-medium transition-colors">📩 Nuevos Clientes</button>
+        <button data-seccion="historial" class="nav-btn w-full text-left px-4 py-3 rounded font-medium transition-colors">📋 Historial CRM</button>
+      </nav>
+      <div class="p-4 border-t">
+        <div class="flex items-center gap-3 mb-4 px-2">
+          <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center font-bold text-gray-600">A</div>
+          <div><p class="text-sm font-bold text-gray-800">Admin</p><p class="text-xs text-gray-500">Panel de Control</p></div>
+        </div>
+        <button id="btn-cerrar-sesion" class="w-full text-center px-4 py-2 text-white bg-gray-800 hover:bg-black rounded transition-colors text-sm font-bold">Cerrar Sesión</button>
+      </div>
+    </aside>
+
+    <main class="main-content ml-64 flex-1 p-5 md:p-8">
+      <section id="seccion-garaje" class="seccion-dashboard">
+        <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">Mi Garaje Nissan</h2>
+          <span class="bg-black text-white text-xs px-3 py-1 rounded-full uppercase tracking-wide">Gestión de Catálogo</span>
+        </div>
+        <div class="bg-white rounded-lg shadow p-5 md:p-8">
+          <h3 class="text-lg font-bold text-gray-700 border-b pb-2 mb-6">Subir Nuevo Modelo al Catálogo</h3>
+          <form id="form-modelo" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-5">
+              <div>
+                <label for="nombre-modelo" class="block text-sm font-bold text-gray-700 mb-1">Nombre Comercial del Vehículo:</label>
+                <input id="nombre-modelo" type="text" required placeholder="Ej: Nissan Frontier PRO-4X 2026" class="w-full px-3 py-2 border border-gray-300 rounded focus:border-red-600 focus:outline-none">
+              </div>
+              <div class="p-4 border border-dashed border-gray-300 rounded bg-gray-50">
+                <label for="modelo-3d" class="block text-sm font-bold text-gray-700 mb-2">Modelo 3D (.glb, .gltf):</label>
+                <input id="modelo-3d" type="file" accept=".glb,.gltf" class="w-full text-sm text-gray-500">
+              </div>
+              <div class="p-4 border border-dashed border-gray-300 rounded bg-gray-50">
+                <label for="ficha-pdf" class="block text-sm font-bold text-gray-700 mb-2">Ficha Técnica (.pdf):</label>
+                <input id="ficha-pdf" type="file" accept=".pdf" class="w-full text-sm text-gray-500">
+              </div>
+            </div>
+            <div class="space-y-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="categoria" class="block text-sm font-bold text-gray-700 mb-1">Categoría:</label>
+                  <select id="categoria" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                    <option>Crossovers / SUVs</option><option>Camiones</option><option>Autos Deportivos</option><option>Electrificados</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="precio" class="block text-sm font-bold text-gray-700 mb-1">Precio Base ($):</label>
+                  <input id="precio" type="number" min="0" placeholder="Ej: 32490" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                </div>
+              </div>
+              <div>
+                <label for="descripcion" class="block text-sm font-bold text-gray-700 mb-1">Descripción corta (para la tarjeta web):</label>
+                <textarea id="descripcion" rows="3" placeholder="Redefine tu concepto de libertad..." class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-600"></textarea>
+              </div>
+              <div class="flex items-center gap-2 pt-2">
+                <input type="checkbox" id="publicar" class="w-5 h-5 text-red-600" checked>
+                <label for="publicar" class="text-sm font-bold text-gray-700">Publicar inmediatamente en el catálogo web</label>
+              </div>
+              <button type="submit" class="w-full bg-red-600 text-white font-bold py-3 px-6 rounded hover:bg-black transition-colors">Guardar en Mi Garaje</button>
+              <p id="modelo-mensaje" class="hidden text-sm text-green-700" role="status"></p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="seccion-clientes" class="seccion-dashboard oculto">
+        <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">Nuevos Clientes (Leads Pendientes)</h2>
+          <span id="contador-pendientes" class="bg-yellow-100 text-yellow-800 font-bold px-3 py-1 rounded text-sm">2 Sin Contactar</span>
+        </div>
+        <div class="bg-white rounded-lg shadow overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[850px]">
+            <thead class="bg-gray-800 text-white"><tr>
+              <th class="p-4 text-sm font-semibold">Datos del Cliente</th><th class="p-4 text-sm font-semibold">Vehículo de Interés</th><th class="p-4 text-sm font-semibold">Mensaje / Solicitud</th><th class="p-4 text-sm font-semibold">Fecha de Ingreso</th><th class="p-4 text-sm font-semibold text-center">Acción</th>
+            </tr></thead>
+            <tbody id="tabla-clientes" class="text-sm divide-y divide-gray-200">
+              <tr class="hover:bg-gray-50">
+                <td class="p-4"><p class="font-bold text-gray-900">Carlos Mendoza</p><p class="text-gray-500">carlos.m@email.com</p><p class="text-gray-500">+51 987 654 321</p></td>
+                <td class="p-4 font-medium">Rogue® 2026.5</td><td class="p-4 text-gray-600 italic">"Quiero saber si tienen planes de financiamiento a 48 meses."</td><td class="p-4 text-gray-500">Hace 2 horas</td>
+                <td class="p-4 text-center"><button class="btn-contactado bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-bold text-xs uppercase">Marcar Contactado</button></td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="p-4"><p class="font-bold text-gray-900">Lucía Torres</p><p class="text-gray-500">ltorres99@email.com</p><p class="text-gray-500">+51 912 345 678</p></td>
+                <td class="p-4 font-medium">Nissan LEAF®</td><td class="p-4 text-gray-600 italic">"Solicito enviar ficha técnica completa y disponibilidad de colores."</td><td class="p-4 text-gray-500">Hace 5 horas</td>
+                <td class="p-4 text-center"><button class="btn-contactado bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-bold text-xs uppercase">Marcar Contactado</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="seccion-historial" class="seccion-dashboard oculto">
+        <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">Historial de Clientes CRM</h2>
+          <div class="flex gap-2">
+            <input id="buscar-historial" type="text" placeholder="Buscar cliente..." class="px-3 py-2 border border-gray-300 rounded focus:outline-none text-sm">
+            <button id="btn-buscar" class="bg-gray-800 text-white px-4 py-2 rounded text-sm font-bold">Buscar</button>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[650px]">
+            <thead class="bg-gray-100 text-gray-700 border-b border-gray-300"><tr>
+              <th class="p-4 text-sm font-semibold">Cliente</th><th class="p-4 text-sm font-semibold">Vehículo</th><th class="p-4 text-sm font-semibold">Fecha Contacto</th><th class="p-4 text-sm font-semibold">Estado de Venta</th><th class="p-4 text-sm font-semibold">Asesor</th>
+            </tr></thead>
+            <tbody id="tabla-historial" class="text-sm divide-y divide-gray-200">
+              <tr><td class="p-4 font-medium">Roberto Sánchez</td><td class="p-4">Frontier PRO-4X</td><td class="p-4">10 Oct 2026</td><td class="p-4"><span class="bg-green-100 text-green-800 py-1 px-3 rounded-full text-xs font-bold">Venta Cerrada</span></td><td class="p-4">Admin</td></tr>
+              <tr><td class="p-4 font-medium">Elena Vargas</td><td class="p-4">Kicks® 2027</td><td class="p-4">12 Oct 2026</td><td class="p-4"><span class="bg-blue-100 text-blue-800 py-1 px-3 rounded-full text-xs font-bold">En Seguimiento</span></td><td class="p-4">Admin</td></tr>
+              <tr><td class="p-4 font-medium">Martín López</td><td class="p-4">Pathfinder®</td><td class="p-4">05 Oct 2026</td><td class="p-4"><span class="bg-red-100 text-red-800 py-1 px-3 rounded-full text-xs font-bold">Venta Perdida</span></td><td class="p-4">Admin</td></tr>
+            </tbody>
+          </table>
+          <p id="sin-resultados" class="hidden p-4 text-sm text-gray-500">No se encontraron clientes.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

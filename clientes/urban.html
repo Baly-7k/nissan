@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nissan - Innovación y Emoción</title>
+    <!-- Tailwind CSS para el diseño rápido y moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+        }
+        
+    </style>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+</head>
+<body class="m-0 p-0 overflow-x-hidden">
+    <header class=" w-full top-0 z-50 bg-gradient-to-b text-white py-10 z-50">
+        <div class="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-0">
+            <div class="flex justify-between items-center h-16">
+                
+                <!-- Logo Local -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer">
+                    <img src="nissan-logo-black.svg" alt="Nissan Logo" class="h-20 w-auto object-contain">
+                </div>
+
+                <!-- Enlaces de navegación exactos a la imagen -->
+                <nav class="hidden md:flex space-x-8 items-center mr-auto ml-[742px]">
+                    <a href="catalogo.html" class="text-black hover:text-gray-300 transition-colors">Vehiculos</a>
+                    <a href="cotizacion.html" class="text-black hover:text-gray-300 transition-colors">Cotización</a>
+                    <a href="cotizacion.html" class="text-black hover:text-gray-300 transition-colors">Distribuidores</a>
+                    <a href="index.html" class="group flex items-center bg-white/10 hover:bg-red-600 px-4 py-2 rounded-full border border-gray-400 hover:border-red-600 transition duration-300">                        
+                        <span class="font-bold text-black group-hover:text-white tracking-wide transition-colors duration-300">Inicio</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main>
+    <!-- SUB-NAVEGACIÓN (Menú secundario) -->
+<div class="w-full bg-white border-b border-gray-200 py-3 px-6 md:px-12 flex items-center justify-between sticky top-0 z-40 shadow-sm">
+    
+    <!-- Lado Izquierdo: Modelo -->
+    <div class="flex flex-col">
+        <h2 class="font-black text-lg text-black leading-tight">Urban® 2027</h2>
+        
+    </div>
+
+   
+    <nav class="hidden md:flex items-center gap-10 font-bold text-sm">
+        <button
+            id="btn-exterior"
+            onclick="cambiarPestana('exterior')"
+            class="pb-3 border-b-4 border-[#c3002f] text-black">
+            Exterior
+        </button>
+
+        <button
+            id="btn-interior"
+            onclick="cambiarPestana('interior')"
+            class="pb-3 border-b-4 border-transparent text-gray-500 hover:text-black">
+            Interior
+        </button>
+    </nav>
+
+
+    <!-- Lado Derecho: Botones de Acción -->
+    <div class="hidden lg:flex items-center gap-4">
+        <a href="#" class="border border-black rounded-full px-5 py-2.5 text-xs font-bold text-black hover:bg-black hover:text-white transition-colors">
+            Contacta Con Un Distribuidor &rarr;
+        </a>
+    </div>
+</div>
+
+
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="w-full">
+
+    <!-- VISTA EXTERIOR -->
+    <section id="vista-exterior"
+        class="flex flex-col lg:flex-row w-full h-[calc(100vh-130px)] min-h-[500px]">
+
+        <!-- VISOR DEL VEHÍCULO -->
+        <div class="w-full lg:w-3/4 h-[55vh] lg:h-full relative bg-gray-200">
+            <img src="sentra.webp"
+                 alt="Fondo de la Nissan Sentra"
+                 class="absolute inset-0 w-full h-full object-cover">
+
+            <model-viewer
+                id="visorAuto"
+                src="urban.glb"
+                alt="Nissan Frontier 2027"
+                auto-rotate
+                camera-controls
+                interaction-prompt="none"
+                shadow-intensity="1"
+                exposure="1"
+                class="absolute inset-0 w-full h-full bg-transparent">
+            </model-viewer>
+        </div>
+
+        <!-- PANEL DE COLORES -->
+        <aside class="w-full lg:w-1/4 h-full bg-[#f8f8f8] border-l border-gray-200 flex flex-col">
+            <div class="p-6 overflow-y-auto flex-grow">
+                <h3 class="text-xs font-bold tracking-widest uppercase mb-6">
+                    Exterior
+                </h3>
+
+                <h2 class="font-bold text-lg mb-5">Color exterior</h2>
+                <p class="font-bold text-sm mb-5">Estándar</p>
+
+                <div class="space-y-4">
+                    <button type="button"
+                        class="opcion-color flex items-center gap-4 w-full text-left"
+                        data-model="urban.glb"
+                        aria-pressed="false">
+                        <span class="muestra-color w-12 h-12 shrink-0 rounded-md border-2 border-gray-300"
+                            style="background-color:#2a2727"></span>
+                        <span class="text-sm font-bold">Negro</span>
+                    </button>
+
+                    <button type="button"
+                        class="opcion-color flex items-center gap-4 w-full text-left"
+                        data-model="urban-verde.glb"
+                        aria-pressed="true">
+                        <span class="muestra-color w-12 h-12 shrink-0 rounded-md border-2 border-gray-300 ring-2 ring-red-600 ring-offset-2"
+                            style="background-color:#153422"></span>
+                        <span class="text-sm font-bold">Verde</span>
+                    </button>
+
+                    <button type="button"
+                        class="opcion-color flex items-center gap-4 w-full text-left"
+                        data-model="urban-blanca.glb"
+                        aria-pressed="false">
+                        <span class="muestra-color w-12 h-12 shrink-0 rounded-md border-2 border-gray-300"
+                            style="background-color:#eec1f1"></span>
+                        <span class="text-sm font-medium">Blanca</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 border-t border-gray-200">
+                <p class="text-xs text-gray-500">Precio de venta sugerido</p>
+                <p class="font-black text-2xl mb-4">$24,135</p>
+                <button class="w-full bg-[#c3002f] rounded-full px-4 py-3 text-sm font-bold text-white hover:bg-red-800 transition">
+                    Finalizar la construcción →
+                </button>
+            </div>
+        </aside>
+    </section>
+
+    <!-- VISTA INTERIOR -->
+    <section id="vista-interior"
+        class="hidden flex-col lg:flex-row w-full h-[calc(100vh-130px)] min-h-[500px]">
+
+        <!-- VISOR DEL MOTOR -->
+        <div class="w-full lg:w-3/4 h-[55vh] lg:h-full relative bg-gray-100">
+            <model-viewer
+                id="visor-motor"
+                src="motor1.glb"
+                alt="Motor de la Nissan Frontier"
+                camera-controls
+                auto-rotate
+                shadow-intensity="1"
+                exposure="1"
+                class="w-full h-full">
+            </model-viewer>
+
+            <div class="absolute top-6 left-6 bg-white/90 rounded-xl p-4 shadow">
+                <p class="text-xs tracking-widest text-gray-500">NISSAN URBAN 2027</p>
+                <h2 class="text-xl font-black">Explora el motor</h2>
+                <p class="text-sm text-gray-600">Gira y acerca la vista para observarlo.</p>
+            </div>
+        </div>
+
+        <!-- PANEL DE MOTORES -->
+        <aside class="w-full lg:w-1/4 h-full bg-[#f8f8f8] border-l border-gray-200 flex flex-col">
+            <div class="p-6 overflow-y-auto flex-grow">
+                <p class="text-xs font-bold tracking-widest text-gray-500 mb-3">
+                    INTERIOR · MOTORIZACIÓN
+                </p>
+
+                <h2 class="text-2xl font-black mb-2">Elige tu motor</h2>
+                <p class="text-sm text-gray-500 mb-6">
+                    Selecciona una opción para visualizar su modelo 3D.
+                </p>
+
+                <div class="space-y-4">
+
+                    <button type="button"
+                        onclick="cambiarMotor('motor1.glb', this)"
+                        class="opcion-motor w-full text-left p-4 bg-white border-2 border-[#c3002f] rounded-xl transition">
+                        <span class="text-xs text-[#c3002f] font-bold">OPCIÓN 01</span>
+                        <h3 class="font-bold text-lg mt-1">Motor 2.5</h3>
+                        <p class="text-sm text-gray-500 mt-2">
+                            Una opción para el uso diario y los recorridos habituales.
+                        </p>
+                        <span class="block text-sm font-bold mt-4">Seleccionado ✓</span>
+                    </button>
+
+                    <button type="button"
+                        onclick="cambiarMotor('motor2.glb', this)"
+                        class="opcion-motor w-full text-left p-4 bg-white border border-gray-300 rounded-xl hover:border-[#c3002f] transition">
+                        <span class="text-xs text-gray-500 font-bold">OPCIÓN 02</span>
+                        <h3 class="font-bold text-lg mt-1">Motor 2.8</h3>
+                        <p class="text-sm text-gray-500 mt-2">
+                            Una alternativa para mostrar otra configuración de motor.
+                        </p>
+                        <span class="block text-sm font-bold mt-4">Ver motor →</span>
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="bg-white p-5 border-t border-gray-200">
+                <p class="text-xs text-gray-500 mb-3">
+                    Configuración de motorización
+                </p>
+                <button type="button"
+                    onclick="cambiarPestana('exterior')"
+                    class="w-full border border-gray-400 rounded-full px-4 py-3 text-sm font-bold hover:bg-gray-100 transition">
+                    ← Volver al exterior
+                </button>
+            </div>
+        </aside>
+    </section>
+
+</div>
+
+    </main>
+    <script src="autoss.js"></script>
+</body>
+</html>

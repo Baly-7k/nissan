@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar Cotización - Nissan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Roboto', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+    <header class=" w-full top-0 z-50 bg-gradient-to-b text-white py-10 z-50">
+        <div class="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-0">
+            <div class="flex justify-between items-center h-16">
+                
+                <!-- Logo Local -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer">
+                    <img src="nissan-logo-black.svg" alt="Nissan Logo" class="h-20 w-auto object-contain">
+                </div>
+
+                
+                <nav class="hidden md:flex space-x-8 items-center ml-auto">
+                    <a href="#" class="text-black hover:text-gray-300 transition-colors">Cotización</a>
+
+                    <a href="concesionarios.html" class="text-black hover:text-gray-300 transition-colors">Distribuidores</a>
+
+                    <a href="index.html" class="group flex items-center bg-white/10 hover:bg-red-600 px-4 py-2 rounded-full border border-gray-400 hover:border-red-600 transition duration-300">
+                        <span class="font-bold text-black group-hover:text-white tracking-wide transition-colors duration-300">Inicio</span>
+                    </a>
+                </nav>
+
+            </div>
+        </div>
+    </header>
+    <!-- Contenedor Principal -->
+    <main class="flex-grow flex items-center justify-center p-6">
+        <div class="max-w-5xl w-full bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+            
+            <!-- Columna Izquierda: Información -->
+            <div class="md:w-5/12 bg-gray-900 text-white p-10 flex flex-col justify-between relative overflow-hidden">
+                <div class="z-10 relative">
+                    <h2 class="text-4xl font-black uppercase tracking-tight mb-4">Da el <span class="text-red-600">siguiente paso</span></h2>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-8">
+                        Déjanos tus datos y un asesor especializado se contactará contigo para brindarte información detallada, opciones de financiamiento y programar tu prueba de manejo.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-red-600 p-2 rounded-full text-xs">✓</span>
+                            <span class="text-sm font-medium">Asesoría personalizada</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="bg-red-600 p-2 rounded-full text-xs">✓</span>
+                            <span class="text-sm font-medium">Planes de financiamiento</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="bg-red-600 p-2 rounded-full text-xs">✓</span>
+                            <span class="text-sm font-medium">Prueba de manejo gratuita</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decoración de fondo -->
+                <div class="absolute -bottom-20 -right-20 text-[200px] text-white/5 font-black uppercase pointer-events-none">
+                    NISSAN
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Formulario -->
+            <div class="md:w-7/12 p-10">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Datos de Cotización</h3>
+                
+                <form action="#" method="POST" onsubmit="enviarCotizacion(event)">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                        <!-- Nombres -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Nombre Completo</label>
+                            <input type="text" required placeholder="Ej: Juan Pérez" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded focus:bg-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-colors text-sm">
+                        </div>
+                        <!-- Teléfono -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Teléfono / Celular</label>
+                            <input type="tel" required placeholder="+51 987 654 321" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded focus:bg-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-colors text-sm">
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <!-- Correo -->
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Correo Electrónico</label>
+                        <input type="email" required placeholder="tu@email.com" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded focus:bg-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-colors text-sm">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                        <!-- Vehículo de Interés -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Vehículo de Interés</label>
+                            <select required class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded focus:bg-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-colors text-sm text-gray-700">
+                                <option value="" disabled selected>Selecciona un modelo...</option>
+                                <option value="rogue">Rogue® 2026.5</option>
+                                <option value="frontier">Frontier PRO-4X</option>
+                                <option value="kicks">Kicks® 2027</option>
+                                <option value="leaf">Nissan LEAF®</option>
+                            </select>
+                        </div>
+                        <!-- Concesionario -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Concesionario de Preferencia</label>
+                            <select required class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded focus:bg-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-colors text-sm text-gray-700">
+                                <option value="" disabled selected>Selecciona tu ciudad...</option>
+                                <option value="arequipa">Arequipa - Perumotor</option>
+                                <option value="lima">Lima - Maquinarias</option>
+                                <option value="cusco">Cusco - Automotriz</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <!-- Mensaje -->
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Mensaje o Consulta Adicional (Opcional)</label>
+                        <textarea rows="3" placeholder="Ej: Me interesa conocer planes de financiamiento a 48 meses..." class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded focus:bg-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-colors text-sm resize-none"></textarea>
+                    </div>
+
+                    <!-- Botón Enviar -->
+                    <button type="submit" class="w-full bg-red-600 text-white font-black uppercase tracking-wider py-4 rounded hover:bg-black transition-colors shadow-lg shadow-red-600/30">
+                        Solicitar Cotización
+                    </button>
+                    
+                    <p class="text-[10px] text-gray-400 text-center mt-4">
+                        Al enviar este formulario, aceptas nuestras políticas de privacidad y el tratamiento de tus datos para fines comerciales.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Script simulador de envío -->
+    <script>
+        function enviarCotizacion(event) {
+            event.preventDefault(); // Evita que recargue la página
+            
+            // Aquí iría tu fetch() hacia el backend (ej. FastAPI o Spring Boot)
+            // para insertar este lead en la base de datos de tu CRM.
+            
+            alert("¡Cotización enviada con éxito! Tus datos han sido registrados y pronto un asesor se comunicará contigo.");
+            
+            // Redirige de vuelta al inicio
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
