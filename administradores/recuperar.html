@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar acceso - Nissan Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100">
+  <main class="min-h-screen flex items-center justify-center bg-black px-4 py-8">
+    <section class="bg-white p-8 md:p-10 rounded-lg shadow-xl w-full max-w-md">
+      <div class="flex justify-center mb-6">
+        <h1 class="text-2xl font-black tracking-widest text-black uppercase">Recuperar <span class="text-red-600">Acceso</span></h1>
+      </div>
+      <p class="text-sm text-gray-600 mb-6 text-center">Ingresa tu correo institucional y te enviaremos las instrucciones para restablecer tu contraseña.</p>
+      <form id="form-recuperar">
+        <div class="mb-6">
+          <label for="email-recuperar" class="block text-gray-700 text-sm font-bold mb-2">Correo Electrónico</label>
+          <input id="email-recuperar" type="email" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+        </div>
+        <button type="submit" class="w-full bg-black text-white font-bold py-3 px-4 rounded hover:bg-gray-800 transition-colors mb-4">Enviar enlace</button>
+        <p id="recuperar-mensaje" class="hidden text-sm text-center mb-4" role="status"></p>
+        <div class="text-center">
+          <a href="login.html" class="text-sm text-gray-500 hover:text-red-600 transition-colors">← Volver al inicio de sesión</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+  apiKey: "AIzaSyBmoQlae7yfKRXxMl3vOyfey4K1kp4kPIw",
+  authDomain: "nissan-8b891.firebaseapp.com",
+  projectId: "nissan-8b891",
+  storageBucket: "nissan-8b891.firebasestorage.app",
+  messagingSenderId: "123985195949",
+  appId: "1:123985195949:web:9394df8c55885a274be724",
+  measurementId: "G-KTPXQ7S84C"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const form = document.getElementById('form-recuperar');
+    const mensaje = document.getElementById('recuperar-mensaje');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email-recuperar').value.trim();
+      
+      // Limpiar mensajes previos
+      mensaje.classList.add('hidden');
+      mensaje.classList.remove('text-green-700', 'text-red-600');
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        
+        // Mensaje de éxito genérico (se muestra siempre, exista o no el correo)
+        mensaje.textContent = "Si el correo está registrado, recibirás un enlace de recuperación en breve.";
+        mensaje.classList.add('text-green-700');
+        mensaje.classList.remove('hidden');
+        
+      } catch (error) {
+        console.error("Error completo:", error);
+        
+        // Aunque ocurra un error (ej. formato inválido), mostramos el mismo mensaje
+        // para no revelar si el correo existe o no.
+        // La única excepción sería un error de red, pero mantenemos la simplicidad.
+        mensaje.textContent = "Si el correo está registrado, recibirás un enlace de recuperación en breve.";
+        mensaje.classList.add('text-green-700');
+        mensaje.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Nissan Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100">
+  <div class="min-h-screen flex bg-gray-100">
+    <aside class="sidebar w-64 bg-white shadow-md flex flex-col fixed h-full z-10">
+      <div class="p-6 bg-black text-white text-xl font-black uppercase tracking-widest text-center">Nissan</div>
+      <nav class="flex flex-col flex-grow p-4 space-y-2">
+        <button data-seccion="garaje" class="nav-btn active w-full text-left px-4 py-3 rounded font-bold transition-colors">🚗 Mi Garaje Nissan</button>
+        <button data-seccion="clientes" class="nav-btn w-full text-left px-4 py-3 rounded font-medium transition-colors">📩 Nuevos Clientes</button>
+        <button data-seccion="historial" class="nav-btn w-full text-left px-4 py-3 rounded font-medium transition-colors">📋 Historial CRM</button>
+      </nav>
+      <div class="p-4 border-t">
+        <!-- Botón de perfil -->
+        <button id="btn-perfil" class="flex items-center gap-3 mb-4 px-2 w-full text-left hover:bg-gray-100 p-2 rounded-lg transition-colors">
+          <div id="admin-avatar" class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center font-bold text-gray-600 overflow-hidden flex-shrink-0">
+            <img id="admin-img" src="" alt="Admin" class="w-full h-full object-cover hidden">
+            <span id="admin-initial">A</span>
+          </div>
+          <div><p class="text-sm font-bold text-gray-800" id="admin-nombre">Admin</p><p class="text-xs text-gray-500">Ver mi perfil</p></div>
+        </button>
+        <button id="btn-cerrar-sesion" class="w-full text-center px-4 py-2 text-white bg-gray-800 hover:bg-black rounded transition-colors text-sm font-bold">Cerrar Sesión</button>
+      </div>
+    </aside>
+
+    <main class="main-content ml-64 flex-1 p-5 md:p-8">
+      <!-- SECCIÓN GARAJE -->
+      <section id="seccion-garaje" class="seccion-dashboard">
+        <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">Mi Garaje Nissan</h2>
+          <span class="bg-black text-white text-xs px-3 py-1 rounded-full uppercase tracking-wide">Gestión de Catálogo</span>
+        </div>
+        <div class="bg-white rounded-lg shadow p-5 md:p-8">
+          <h3 class="text-lg font-bold text-gray-700 border-b pb-2 mb-6">Subir Nuevo Modelo al Catálogo</h3>
+          <form id="form-modelo" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-5">
+              <div>
+                <label for="nombre-modelo" class="block text-sm font-bold text-gray-700 mb-1">Nombre Comercial del Vehículo:</label>
+                <input id="nombre-modelo" type="text" required placeholder="Ej: Nissan Frontier PRO-4X 2026" class="w-full px-3 py-2 border border-gray-300 rounded focus:border-red-600 focus:outline-none">
+              </div>
+              <div class="p-4 border border-dashed border-gray-300 rounded bg-gray-50">
+                <label for="modelo-3d" class="block text-sm font-bold text-gray-700 mb-2">Modelo 3D (.glb, .gltf):</label>
+                <input id="modelo-3d" type="file" accept=".glb,.gltf" class="w-full text-sm text-gray-500">
+              </div>
+              <div class="p-4 border border-dashed border-gray-300 rounded bg-gray-50">
+                <label for="ficha-pdf" class="block text-sm font-bold text-gray-700 mb-2">Ficha Técnica (.pdf):</label>
+                <input id="ficha-pdf" type="file" accept=".pdf" class="w-full text-sm text-gray-500">
+              </div>
+            </div>
+            <div class="space-y-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="categoria" class="block text-sm font-bold text-gray-700 mb-1">Categoría:</label>
+                  <select id="categoria" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                    <option>Crossovers / SUVs</option><option>Camiones</option><option>Autos Deportivos</option><option>Electrificados</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="precio" class="block text-sm font-bold text-gray-700 mb-1">Precio Base ($):</label>
+                  <input id="precio" type="number" min="0" placeholder="Ej: 32490" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                </div>
+              </div>
+              <div>
+                <label for="descripcion" class="block text-sm font-bold text-gray-700 mb-1">Descripción corta (para la tarjeta web):</label>
+                <textarea id="descripcion" rows="3" placeholder="Redefine tu concepto de libertad..." class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-600"></textarea>
+              </div>
+              <div class="flex items-center gap-2 pt-2">
+                <input type="checkbox" id="publicar" class="w-5 h-5 text-red-600" checked>
+                <label for="publicar" class="text-sm font-bold text-gray-700">Publicar inmediatamente en el catálogo web</label>
+              </div>
+              <button type="submit" class="w-full bg-red-600 text-white font-bold py-3 px-6 rounded hover:bg-black transition-colors">Guardar en Mi Garaje</button>
+              <p id="modelo-mensaje" class="hidden text-sm text-green-700" role="status"></p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- SECCIÓN CLIENTES -->
+      <section id="seccion-clientes" class="seccion-dashboard oculto">
+        <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">Nuevos Clientes (Leads Pendientes)</h2>
+          <span id="contador-pendientes" class="bg-yellow-100 text-yellow-800 font-bold px-3 py-1 rounded text-sm">0 Sin Contactar</span>
+        </div>
+        <div class="bg-white rounded-lg shadow overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[850px]">
+            <thead class="bg-gray-800 text-white"><tr>
+              <th class="p-4 text-sm font-semibold">Datos del Cliente</th><th class="p-4 text-sm font-semibold">Vehículo de Interés</th><th class="p-4 text-sm font-semibold">Mensaje / Solicitud</th><th class="p-4 text-sm font-semibold">Fecha de Ingreso</th><th class="p-4 text-sm font-semibold text-center">Asesor</th>
+            </tr></thead>
+            <tbody id="tabla-clientes" class="text-sm divide-y divide-gray-200"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECCIÓN HISTORIAL -->
+      <section id="seccion-historial" class="seccion-dashboard oculto">
+        <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">Historial de Clientes CRM</h2>
+          <div class="flex gap-2">
+            <input id="buscar-historial" type="text" placeholder="Buscar cliente..." class="px-3 py-2 border border-gray-300 rounded focus:outline-none text-sm">
+            <button id="btn-buscar" class="bg-gray-800 text-white px-4 py-2 rounded text-sm font-bold">Buscar</button>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[650px]">
+            <thead class="bg-gray-100 text-gray-700 border-b border-gray-300"><tr>
+              <th class="p-4 text-sm font-semibold">Cliente</th><th class="p-4 text-sm font-semibold">Vehículo</th><th class="p-4 text-sm font-semibold">Fecha Contacto</th><th class="p-4 text-sm font-semibold">Estado de Venta</th><th class="p-4 text-sm font-semibold">Asesor</th>
+            </tr></thead>
+            <tbody id="tabla-historial" class="text-sm divide-y divide-gray-200"></tbody>
+          </table>
+          <p id="sin-resultados" class="hidden p-4 text-sm text-gray-500">No se encontraron clientes.</p>
+        </div>
+      </section>
+
+      <!-- NUEVA SECCIÓN: MI PERFIL -->
+      <section id="seccion-perfil" class="seccion-dashboard oculto">
+        <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">Mi Perfil</h2>
+        </div>
+        <div class="bg-white rounded-lg shadow p-5 md:p-8 max-w-4xl mx-auto">
+          <form id="form-perfil">
+            <div class="flex flex-col md:flex-row items-center gap-8 mb-8">
+              <!-- Foto de Perfil -->
+              <div class="flex flex-col items-center">
+                <div class="relative w-32 h-32 rounded-full overflow-hidden shadow-lg border-4 border-gray-200 mb-2">
+                  <img id="perfil-img-preview" src="" alt="Foto de perfil" class="w-full h-full object-cover hidden">
+                  <div id="perfil-img-initial" class="w-full h-full flex items-center justify-center bg-gray-300 text-gray-600 text-5xl font-bold">A</div>
+                </div>
+                <label for="perfil-imagen" class="cursor-pointer bg-black text-white text-xs font-bold px-4 py-2 rounded hover:bg-red-600 transition-colors">
+                  Cambiar Foto
+                </label>
+                <input id="perfil-imagen" type="file" accept="image/*" class="hidden">
+              </div>
+
+              <!-- Datos Personales -->
+              <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                <div>
+                  <label for="perfil-nombre" class="block text-sm font-bold text-gray-700 mb-1">Nombre:</label>
+                  <input id="perfil-nombre" type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:border-red-600 focus:outline-none">
+                </div>
+                <div>
+                  <label for="perfil-apellido-paterno" class="block text-sm font-bold text-gray-700 mb-1">Apellido Paterno:</label>
+                  <input id="perfil-apellido-paterno" type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:border-red-600 focus:outline-none">
+                </div>
+                <div>
+                  <label for="perfil-apellido-materno" class="block text-sm font-bold text-gray-700 mb-1">Apellido Materno:</label>
+                  <input id="perfil-apellido-materno" type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:border-red-600 focus:outline-none">
+                </div>
+                <div>
+                  <label for="perfil-correo" class="block text-sm font-bold text-gray-700 mb-1">Correo Electrónico:</label>
+                  <input id="perfil-correo" type="email" required class="w-full px-3 py-2 border border-gray-300 rounded focus:border-red-600 focus:outline-none">
+                </div>
+                <div>
+                  <label for="perfil-telefono" class="block text-sm font-bold text-gray-700 mb-1">Teléfono:</label>
+                  <input id="perfil-telefono" type="tel" class="w-full px-3 py-2 border border-gray-300 rounded focus:border-red-600 focus:outline-none">
+                </div>
+                <!-- Campo de solo lectura para mostrar el rol -->
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-1">Rol:</label>
+                  <input type="text" value="Administrador" class="w-full px-3 py-2 border border-gray-300 rounded bg-gray-100 text-gray-500 cursor-not-allowed" readonly>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sección para cambiar contraseña -->
+            <div class="border-t pt-6 mt-6">
+              <h3 class="text-lg font-bold text-gray-700 mb-4">Cambiar Contraseña</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="perfil-pass-actual" class="block text-sm font-bold text-gray-700 mb-1">Contraseña Actual:</label>
+                  <input id="perfil-pass-actual" type="password" placeholder="Ingresa tu contraseña actual" class="w-full px-3 py-2 border border-gray-300 rounded focus:border-red-600 focus:outline-none">
+                </div>
+                <div>
+                  <label for="perfil-pass-nueva" class="block text-sm font-bold text-gray-700 mb-1">Nueva Contraseña:</label>
+                  <input id="perfil-pass-nueva" type="password" placeholder="Mínimo 6 caracteres" class="w-full px-3 py-2 border border-gray-300 rounded focus:border-red-600 focus:outline-none">
+                </div>
+              </div>
+              <p class="text-xs text-gray-500 mt-2">Si no deseas cambiar tu contraseña, deja estos campos vacíos.</p>
+            </div>
+
+            <div class="flex justify-end pt-6 mt-6 border-t">
+              <button type="submit" class="bg-red-600 text-white font-bold py-3 px-8 rounded hover:bg-black transition-colors">Guardar Cambios</button>
+            </div>
+            <p id="perfil-mensaje" class="hidden text-sm mt-4 text-center" role="status"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, get, set, child, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged, signOut, updatePassword, reauthenticateWithCredential, EmailAuthProvider, verifyBeforeUpdateEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmoQlae7yfKRXxMl3vOyfey4K1kp4kPIw",
+      authDomain: "nissan-8b891.firebaseapp.com",
+      projectId: "nissan-8b891",
+      databaseURL: "https://nissan-8b891-default-rtdb.firebaseio.com",
+      storageBucket: "nissan-8b891.firebasestorage.app",
+      messagingSenderId: "123985195949",
+      appId: "1:123985195949:web:9394df8c55885a274be724",
+      measurementId: "G-KTPXQ7S84C"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    let agenciaId = "lima";
+    let adminNombre = "Admin";
+    let adminUid = null;
+    let listaAsesores = {}; 
+    let adminDataCompleta = null;
+
+    // --- UTILIDADES ---
+    function formatearFecha(timestamp) {
+      if (!timestamp) return "—";
+      const fecha = new Date(timestamp);
+      return fecha.toLocaleString('es-ES', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
+    function tiempoRelativo(timestamp) {
+      if (!timestamp) return "—";
+      const fecha = new Date(timestamp);
+      const ahora = new Date();
+      const diffMs = ahora - fecha;
+      const diffMin = Math.floor(diffMs / 60000);
+      if (diffMin < 1) return "Ahora";
+      if (diffMin < 60) return `Hace ${diffMin} min`;
+      const diffHoras = Math.floor(diffMin / 60);
+      if (diffHoras < 24) return `Hace ${diffHoras} horas`;
+      const diffDias = Math.floor(diffHoras / 24);
+      return `Hace ${diffDias} días`;
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) { resolve(""); return; }
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    // --- LÓGICA DE ASIGNACIÓN EQUITATIVA ---
+    async function cargarAsesores() {
+      const dbRef = ref(db, 'asesores');
+      const snapshot = await get(dbRef);
+      if (snapshot.exists()) {
+        listaAsesores = snapshot.val();
+      }
+    }
+
+    function obtenerNombreAsesor(uid) {
+      if (!uid) return "Admin";
+      let asesor = Object.values(listaAsesores).find(a => a.uid === uid);
+      if (asesor) return `${asesor.nombre} ${asesor.apellidoPaterno}`;
+      
+      if (uid.includes("admin")) {
+        asesor = Object.values(listaAsesores).find(a => a.nombre === "Admin");
+        if (asesor) return `${asesor.nombre} ${asesor.apellidoPaterno}`;
+      }
+      return "Admin";
+    }
+
+    async function asignarAsesorEquitativo(clienteKey, clienteData) {
+      const asesoresAgencia = Object.entries(listaAsesores).filter(([key, val]) => val.agenciaId === agenciaId && val.estado === 'activo');
+      
+      if (asesoresAgencia.length === 0) {
+        console.warn("No hay asesores disponibles en esta agencia.");
+        return null;
+      }
+
+      const conteoClientes = asesoresAgencia.map(([key, asesor]) => ({
+        key,
+        asesor,
+        count: asesor.clientes ? asesor.clientes.length : 0
+      }));
+
+      conteoClientes.sort((a, b) => a.count - b.count);
+
+      const asesorSeleccionado = conteoClientes[0];
+      const asesorUid = asesorSeleccionado.asesor.uid;
+      const asesorNombre = `${asesorSeleccionado.asesor.nombre} ${asesorSeleccionado.asesor.apellidoPaterno}`;
+
+      const updates = {};
+      updates[`agencias/${agenciaId}/clientes/${clienteKey}/asesorAsignado`] = asesorUid;
+      updates[`agencias/${agenciaId}/clientes/${clienteKey}/contactado`] = true;
+      updates[`agencias/${agenciaId}/clientes/${clienteKey}/fechaContacto`] = Date.now();
+
+      const clientesAsesor = asesorSeleccionado.asesor.clientes || [];
+      if (!clientesAsesor.includes(clienteKey)) {
+        clientesAsesor.push(clienteKey);
+        updates[`asesores/${asesorSeleccionado.key}/clientes`] = clientesAsesor;
+      }
+
+      const historialKey = clienteKey; 
+      updates[`agencias/${agenciaId}/historialCRM/${historialKey}`] = {
+        asesorId: asesorUid,
+        clienteUid: clienteData.uid,
+        estadoVenta: "En Seguimiento",
+        fechaContacto: Date.now(),
+        nombreCliente: `${clienteData.nombre} ${clienteData.apellidoPaterno}`,
+        uid: "uid_historial_" + Date.now(),
+        vehiculo: clienteData.vehiculoInteres
+      };
+
+      await update(ref(db), updates);
+      
+      return { asesorNombre, asesorUid };
+    }
+
+    // --- SESIÓN ---
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        adminUid = user.uid;
+        try {
+          const dbRef = ref(db);
+          
+          const snapshotAdmin = await get(child(dbRef, 'administradores'));
+          let encontrado = false;
+
+          if (snapshotAdmin.exists()) {
+            const administradores = snapshotAdmin.val();
+            for (const nombre in administradores) {
+              if (administradores[nombre].uid === user.uid) {
+                const data = administradores[nombre];
+                adminDataCompleta = { key: nombre, ...data };
+                encontrado = true;
+                break;
+              }
+            }
+          }
+
+          if (!encontrado) {
+            const snapshotAsesores = await get(child(dbRef, 'asesores'));
+            if (snapshotAsesores.exists()) {
+              const asesores = snapshotAsesores.val();
+              for (const nombre in asesores) {
+                if (asesores[nombre].uid === user.uid) {
+                  const nuevoAdmin = {
+                    uid: user.uid,
+                    nombre: asesores[nombre].nombre || "Admin",
+                    apellidoPaterno: asesores[nombre].apellidoPaterno || "Nissan",
+                    apellidoMaterno: asesores[nombre].apellidoMaterno || "",
+                    correo: asesores[nombre].correo || user.email,
+                    telefono: asesores[nombre].telefono || "",
+                    imagen: asesores[nombre].imagen || "",
+                    agenciaId: asesores[nombre].agenciaId || "lima",
+                    estado: "activo",
+                    fechaRegistro: Date.now()
+                  };
+                  await set(ref(db, `administradores/${asesores[nombre].nombre} ${asesores[nombre].apellidoPaterno}`), nuevoAdmin);
+                  adminDataCompleta = { key: `${asesores[nombre].nombre} ${asesores[nombre].apellidoPaterno}`, ...nuevoAdmin };
+                  encontrado = true;
+                  break;
+                }
+              }
+            }
+          }
+
+          if (!encontrado) {
+            const nuevoAdmin = {
+              uid: user.uid,
+              nombre: user.email ? user.email.split('@')[0] : "Admin",
+              apellidoPaterno: "Nissan",
+              apellidoMaterno: "",
+              correo: user.email || "admin@nissan.com",
+              telefono: "",
+              imagen: "",
+              agenciaId: "lima",
+              estado: "activo",
+              fechaRegistro: Date.now()
+            };
+            const keyNombre = `${nuevoAdmin.nombre} Nissan`;
+            await set(ref(db, `administradores/${keyNombre}`), nuevoAdmin);
+            adminDataCompleta = { key: keyNombre, ...nuevoAdmin };
+          }
+
+          adminNombre = `${adminDataCompleta.nombre} ${adminDataCompleta.apellidoPaterno}`;
+          document.getElementById('admin-nombre').textContent = adminNombre;
+          agenciaId = adminDataCompleta.agenciaId || "lima";
+          
+          document.getElementById('perfil-nombre').value = adminDataCompleta.nombre || '';
+          document.getElementById('perfil-apellido-paterno').value = adminDataCompleta.apellidoPaterno || '';
+          document.getElementById('perfil-apellido-materno').value = adminDataCompleta.apellidoMaterno || '';
+          document.getElementById('perfil-correo').value = adminDataCompleta.correo || '';
+          document.getElementById('perfil-telefono').value = adminDataCompleta.telefono || '';
+          
+          if (adminDataCompleta.imagen) {
+            document.getElementById('admin-img').src = adminDataCompleta.imagen;
+            document.getElementById('admin-img').classList.remove('hidden');
+            document.getElementById('admin-initial').classList.add('hidden');
+            document.getElementById('perfil-img-preview').src = adminDataCompleta.imagen;
+            document.getElementById('perfil-img-preview').classList.remove('hidden');
+            document.getElementById('perfil-img-initial').classList.add('hidden');
+          } else {
+            document.getElementById('perfil-img-initial').textContent = adminDataCompleta.nombre.charAt(0).toUpperCase();
+          }
+
+        } catch (e) { 
+          console.error("Error obteniendo admin:", e); 
+          alert("Error al cargar los datos del perfil. Revisa la consola para más detalles.");
+        }
+
+        await cargarAsesores(); 
+        await seedData();
+        await procesarClientesPendientes(); 
+        cargarClientes();
+        cargarHistorial();
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    document.getElementById('btn-cerrar-sesion').addEventListener('click', async () => {
+      await signOut(auth);
+      window.location.href = "login.html";
+    });
+
+    // --- NAVEGACIÓN ---
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-btn').forEach(b => {
+          b.classList.remove('active', 'bg-red-600', 'text-white');
+          b.classList.add('text-gray-700', 'hover:bg-gray-100');
+        });
+        btn.classList.add('active', 'bg-red-600', 'text-white');
+        btn.classList.remove('text-gray-700', 'hover:bg-gray-100');
+        document.querySelectorAll('.seccion-dashboard').forEach(sec => sec.classList.add('oculto'));
+        document.getElementById(`seccion-${btn.dataset.seccion}`).classList.remove('oculto');
+      });
+    });
+
+    // --- NAVEGACIÓN A PERFIL ---
+    document.getElementById('btn-perfil').addEventListener('click', () => {
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        b.classList.remove('active', 'bg-red-600', 'text-white');
+        b.classList.add('text-gray-700', 'hover:bg-gray-100');
+      });
+      document.querySelectorAll('.seccion-dashboard').forEach(sec => sec.classList.add('oculto'));
+      document.getElementById('seccion-perfil').classList.remove('oculto');
+    });
+
+    // --- LÓGICA DE ACTUALIZACIÓN DE PERFIL ---
+    document.getElementById('perfil-imagen').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const base64 = await fileToBase64(file);
+        document.getElementById('perfil-img-preview').src = base64;
+        document.getElementById('perfil-img-preview').classList.remove('hidden');
+        document.getElementById('perfil-img-initial').classList.add('hidden');
+      }
+    });
+
+    document.getElementById('form-perfil').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!adminUid || !adminDataCompleta) {
+        alert("No se pudo cargar la información del administrador. Recarga la página.");
+        return;
+      }
+
+      const nuevoNombre = document.getElementById('perfil-nombre').value.trim();
+      const nuevoApellidoPaterno = document.getElementById('perfil-apellido-paterno').value.trim();
+      const nuevoApellidoMaterno = document.getElementById('perfil-apellido-materno').value.trim();
+      const nuevoCorreo = document.getElementById('perfil-correo').value.trim();
+      const nuevoTelefono = document.getElementById('perfil-telefono').value.trim();
+      const imagenPreview = document.getElementById('perfil-img-preview').src;
+      
+      const passActual = document.getElementById('perfil-pass-actual').value;
+      const passNueva = document.getElementById('perfil-pass-nueva').value;
+
+      let nuevaImagenBase64 = adminDataCompleta.imagen || "";
+      if (imagenPreview && imagenPreview !== adminDataCompleta.imagen && imagenPreview.startsWith('data:image')) {
+        nuevaImagenBase64 = imagenPreview;
+      }
+
+      const msg = document.getElementById('perfil-mensaje');
+      msg.classList.add('hidden');
+      msg.classList.remove('text-green-700', 'text-red-700');
+
+      try {
+        // 1. Actualizar Email en Auth si ha cambiado
+        if (nuevoCorreo !== auth.currentUser.email) {
+          if (!passActual) {
+            throw new Error("Debes ingresar tu contraseña actual para cambiar el correo electrónico.");
+          }
+          const credential = EmailAuthProvider.credential(auth.currentUser.email, passActual);
+          await reauthenticateWithCredential(auth.currentUser, credential);
+          
+          // --- CAMBIO CLAVE AQUÍ ---
+          // Usar verifyBeforeUpdateEmail en lugar de updateEmail
+          await verifyBeforeUpdateEmail(auth.currentUser, nuevoCorreo);
+          // -------------------------
+          
+          // Nota: El correo en la base de datos se actualizará de inmediato,
+          // pero el cambio en Firebase Auth se completará solo después de que el usuario
+          // haga clic en el enlace de verificación enviado a su nuevo correo.
+          msg.textContent = "✅ Se ha enviado un correo de verificación a tu nueva dirección. Por favor, revisa tu bandeja de entrada y haz clic en el enlace para confirmar el cambio.";
+          msg.classList.add('text-green-700');
+          msg.classList.remove('hidden');
+        }
+
+        // 2. Actualizar Contraseña si se ha proporcionado una nueva
+        if (passNueva) {
+          if (!passActual) {
+            throw new Error("Debes ingresar tu contraseña actual para cambiarla.");
+          }
+          // Reautenticar de nuevo por si acaso (buena práctica si se cambió el email antes)
+          const credential = EmailAuthProvider.credential(auth.currentUser.email, passActual);
+          await reauthenticateWithCredential(auth.currentUser, credential);
+          await updatePassword(auth.currentUser, passNueva);
+        }
+
+        // 3. Actualizar Base de Datos (Realtime Database)
+        const updates = {};
+        
+        updates[`administradores/${adminDataCompleta.key}/nombre`] = nuevoNombre;
+        updates[`administradores/${adminDataCompleta.key}/apellidoPaterno`] = nuevoApellidoPaterno;
+        updates[`administradores/${adminDataCompleta.key}/apellidoMaterno`] = nuevoApellidoMaterno;
+        updates[`administradores/${adminDataCompleta.key}/correo`] = nuevoCorreo;
+        updates[`administradores/${adminDataCompleta.key}/telefono`] = nuevoTelefono;
+        updates[`administradores/${adminDataCompleta.key}/imagen`] = nuevaImagenBase64;
+
+        if (listaAsesores) {
+          for (const key in listaAsesores) {
+            if (listaAsesores[key].uid === adminUid) {
+              updates[`asesores/${key}/nombre`] = nuevoNombre;
+              updates[`asesores/${key}/apellidoPaterno`] = nuevoApellidoPaterno;
+              updates[`asesores/${key}/apellidoMaterno`] = nuevoApellidoMaterno;
+              updates[`asesores/${key}/correo`] = nuevoCorreo;
+              updates[`asesores/${key}/telefono`] = nuevoTelefono;
+              updates[`asesores/${key}/imagen`] = nuevaImagenBase64;
+              break;
+            }
+          }
+        }
+
+        await update(ref(db), updates);
+        
+        // Actualizar la UI
+        adminNombre = `${nuevoNombre} ${nuevoApellidoPaterno}`;
+        document.getElementById('admin-nombre').textContent = adminNombre;
+        document.getElementById('perfil-img-preview').src = nuevaImagenBase64;
+        document.getElementById('admin-img').src = nuevaImagenBase64;
+        document.getElementById('admin-img').classList.remove('hidden');
+        document.getElementById('admin-initial').classList.add('hidden');
+
+        // Actualizar los datos en memoria
+        adminDataCompleta.nombre = nuevoNombre;
+        adminDataCompleta.apellidoPaterno = nuevoApellidoPaterno;
+        adminDataCompleta.apellidoMaterno = nuevoApellidoMaterno;
+        adminDataCompleta.correo = nuevoCorreo;
+        adminDataCompleta.telefono = nuevoTelefono;
+        adminDataCompleta.imagen = nuevaImagenBase64;
+
+        // Limpiar campos de contraseña
+        document.getElementById('perfil-pass-actual').value = '';
+        document.getElementById('perfil-pass-nueva').value = '';
+
+        if (!msg.textContent.includes("Se ha enviado un correo")) {
+          msg.textContent = "✅ Perfil actualizado correctamente.";
+          msg.classList.add('text-green-700');
+          msg.classList.remove('hidden');
+        }
+        setTimeout(() => msg.classList.add('hidden'), 4000);
+
+        await cargarAsesores();
+        cargarHistorial(); 
+
+      } catch (error) {
+        console.error("Error actualizando perfil:", error);
+        msg.textContent = `❌ ${error.message || "Error al actualizar el perfil. Intenta de nuevo."}`;
+        msg.classList.add('text-red-700');
+        msg.classList.remove('hidden');
+      }
+    });
+
+    // --- PROCESAR CLIENTES PENDIENTES (ASIGNACIÓN AUTOMÁTICA) ---
+    async function procesarClientesPendientes() {
+      const dbRef = ref(db, `agencias/${agenciaId}/clientes`);
+      const snapshot = await get(dbRef);
+      
+      if (!snapshot.exists()) return;
+
+      const clientes = snapshot.val();
+      const pendientes = Object.entries(clientes).filter(([key, c]) => c.contactado === false);
+
+      if (pendientes.length > 0) {
+        console.log(`Procesando ${pendientes.length} clientes pendientes...`);
+        for (const [key, clienteData] of pendientes) {
+          await cargarAsesores();
+          await asignarAsesorEquitativo(key, clienteData);
+        }
+        console.log("Asignación completada.");
+      }
+    }
+
+    // --- SEED DATA (solo si la agencia no existe) ---
+    async function seedData() {
+      const dbRef = ref(db);
+      const agenciaSnap = await get(child(dbRef, `agencias/${agenciaId}`));
+      if (agenciaSnap.exists()) {
+        return;
+      }
+
+      await set(ref(db, `agencias/${agenciaId}`), { nombre: "Lima" });
+
+      await set(ref(db, 'asesores/Admin Nissan'), {
+        uid: "uid_asesor_admin_001",
+        imagen: "",
+        nombre: "Admin",
+        apellidoPaterno: "Nissan",
+        apellidoMaterno: "",
+        telefono: "+51 999 888 777",
+        correo: "admin@nissan.com",
+        estado: "activo",
+        fechaRegistro: Date.now(),
+        agenciaId: agenciaId,
+        clientes: []
+      });
+
+      const clientesEjemplo = [
+        { nombreCompleto: "Carlos Mendoza Ríos", uid: "uid_cliente_carlos_001", nombre: "Carlos", apellidoPaterno: "Mendoza", apellidoMaterno: "Ríos", telefono: "+51 987 654 321", correo: "carlos.m@email.com", vehiculoInteres: "Rogue® 2026.5", mensaje: "Quiero saber si tienen planes de financiamiento a 48 meses.", contactado: false },
+        { nombreCompleto: "Lucía Torres Vega", uid: "uid_cliente_lucia_002", nombre: "Lucía", apellidoPaterno: "Torres", apellidoMaterno: "Vega", telefono: "+51 912 345 678", correo: "ltorres99@email.com", vehiculoInteres: "Nissan LEAF®", mensaje: "Solicito enviar ficha técnica completa y disponibilidad de colores.", contactado: false }
+      ];
+
+      for (const c of clientesEjemplo) {
+        const { nombreCompleto, ...data } = c;
+        await set(ref(db, `clientes/${nombreCompleto}`), {
+          ...data,
+          imagen: "",
+          estado: "activo",
+          fechaRegistro: Date.now(),
+          agenciaId: agenciaId
+        });
+        await set(ref(db, `agencias/${agenciaId}/clientes/${nombreCompleto}`), {
+          ...data,
+          imagen: "",
+          estado: "activo",
+          fechaRegistro: Date.now(),
+          agenciaId: agenciaId,
+          fechaContacto: null
+        });
+      }
+
+      const historialEjemplo = [
+        { nombre: "Roberto Sánchez Paredes", uid: "uid_historial_roberto_001", clienteUid: "uid_cliente_roberto_003", nombreCliente: "Roberto Sánchez", vehiculo: "Frontier PRO-4X", fechaContacto: new Date("2026-10-10").getTime(), estadoVenta: "Venta Cerrada", asesorId: "uid_asesor_admin_001" },
+        { nombre: "Elena Vargas Castro", uid: "uid_historial_elena_002", clienteUid: "uid_cliente_elena_004", nombreCliente: "Elena Vargas", vehiculo: "Kicks® 2027", fechaContacto: new Date("2026-10-12").getTime(), estadoVenta: "En Seguimiento", asesorId: "uid_asesor_admin_001" },
+        { nombre: "Martín López Rojas", uid: "uid_historial_martin_003", clienteUid: "uid_cliente_martin_005", nombreCliente: "Martín López", vehiculo: "Pathfinder®", fechaContacto: new Date("2026-10-05").getTime(), estadoVenta: "Venta Perdida", asesorId: "uid_asesor_admin_001" }
+      ];
+
+      for (const h of historialEjemplo) {
+        const { nombre, ...data } = h;
+        await set(ref(db, `agencias/${agenciaId}/historialCRM/${nombre}`), data);
+      }
+    }
+
+    // --- GARAJE ---
+    const formModelo = document.getElementById('form-modelo');
+    const modeloMensaje = document.getElementById('modelo-mensaje');
+
+    formModelo.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombre-modelo').value.trim();
+      const modelo3dFile = document.getElementById('modelo-3d').files[0];
+      const fichaPdfFile = document.getElementById('ficha-pdf').files[0];
+      const categoria = document.getElementById('categoria').value;
+      const precio = parseFloat(document.getElementById('precio').value) || 0;
+      const descripcion = document.getElementById('descripcion').value;
+      const publicar = document.getElementById('publicar').checked;
+
+      try {
+        const modeloRef = ref(db, `agencias/${agenciaId}/garaje/${nombre}`);
+        const modeloSnap = await get(modeloRef);
+        if (modeloSnap.exists()) {
+          modeloMensaje.textContent = "⚠️ Ya existe un modelo con ese nombre. Usa otro nombre o edita el existente.";
+          modeloMensaje.classList.remove('hidden');
+          modeloMensaje.classList.add('text-yellow-700');
+          setTimeout(() => modeloMensaje.classList.add('hidden'), 4000);
+          return;
+        }
+
+        const modelo3dBase64 = await fileToBase64(modelo3dFile);
+        const fichaPdfBase64 = await fileToBase64(fichaPdfFile);
+
+        await set(modeloRef, {
+          uid: "uid_modelo_" + Date.now(),
+          nombreComercial: nombre,
+          modelo3dUrl: modelo3dBase64,
+          fichaTecnicaUrl: fichaPdfBase64,
+          categoria,
+          precioBase: precio,
+          descripcion,
+          publicar,
+          fechaSubida: Date.now()
+        });
+        modeloMensaje.textContent = "✅ Modelo guardado exitosamente en el garaje.";
+        modeloMensaje.classList.remove('hidden');
+        modeloMensaje.classList.remove('text-yellow-700');
+        formModelo.reset();
+        setTimeout(() => modeloMensaje.classList.add('hidden'), 3000);
+      } catch (error) {
+        console.error("Error guardando modelo:", error);
+        modeloMensaje.textContent = "❌ Error al guardar. Intenta de nuevo.";
+        modeloMensaje.classList.remove('hidden');
+      }
+    });
+
+    // --- CLIENTES (NUEVOS) ---
+    async function cargarClientes() {
+      const dbRef = ref(db, `agencias/${agenciaId}/clientes`);
+      const snapshot = await get(dbRef);
+      const tbody = document.getElementById('tabla-clientes');
+      tbody.innerHTML = '';
+      let pendientes = 0;
+
+      if (snapshot.exists()) {
+        const clientes = snapshot.val();
+        await cargarAsesores();
+
+        for (const key in clientes) {
+          const c = clientes[key];
+          
+          let asesorNombreMostrar = '<span class="bg-yellow-100 text-yellow-800 font-bold px-3 py-1 rounded-full text-xs">Pendiente</span>';
+          
+          if (c.contactado === false) {
+            pendientes++;
+          } else if (c.asesorAsignado) {
+            const nombreAsesor = obtenerNombreAsesor(c.asesorAsignado);
+            asesorNombreMostrar = `<span class="font-bold text-gray-800">${nombreAsesor}</span>`;
+          }
+
+          const tr = document.createElement('tr');
+          tr.className = "hover:bg-gray-50";
+          tr.innerHTML = `
+            <td class="p-4">
+              <p class="font-bold text-gray-900">${c.nombre} ${c.apellidoPaterno}</p>
+              <p class="text-gray-500">${c.correo}</p>
+              <p class="text-gray-500">${c.telefono}</p>
+            </td>
+            <td class="p-4 font-medium">${c.vehiculoInteres}</td>
+            <td class="p-4 text-gray-600 italic">"${c.mensaje}"</td>
+            <td class="p-4 text-gray-500">${tiempoRelativo(c.fechaRegistro)}</td>
+            <td class="p-4 text-center">${asesorNombreMostrar}</td>
+          `;
+          tbody.appendChild(tr);
+        }
+      }
+
+      document.getElementById('contador-pendientes').textContent = `${pendientes} Sin Contactar`;
+    }
+
+    // --- HISTORIAL ---
+    async function cargarHistorial(filtro = "") {
+      const dbRef = ref(db, `agencias/${agenciaId}/historialCRM`);
+      const snapshot = await get(dbRef);
+      const tbody = document.getElementById('tabla-historial');
+      tbody.innerHTML = '';
+      let encontrados = 0;
+
+      await cargarAsesores();
+
+      if (snapshot.exists()) {
+        const historial = snapshot.val();
+        const items = Object.values(historial).sort((a, b) => (b.fechaContacto || 0) - (a.fechaContacto || 0));
+        for (const h of items) {
+          if (filtro && !h.nombreCliente.toLowerCase().includes(filtro.toLowerCase())) continue;
+          encontrados++;
+          
+          const nombreAsesor = obtenerNombreAsesor(h.asesorId);
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="p-4 font-medium">${h.nombreCliente}</td>
+            <td class="p-4">${h.vehiculo}</td>
+            <td class="p-4">${formatearFecha(h.fechaContacto)}</td>
+            <td class="p-4"><span class="py-1 px-3 rounded-full text-xs font-bold ${h.estadoVenta === 'Venta Cerrada' ? 'bg-green-100 text-green-800' : h.estadoVenta === 'En Seguimiento' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}">${h.estadoVenta}</span></td>
+            <td class="p-4 font-bold text-gray-700">${nombreAsesor}</td>
+          `;
+          tbody.appendChild(tr);
+        }
+      }
+
+      document.getElementById('sin-resultados').classList.toggle('hidden', encontrados > 0);
+    }
+
+    document.getElementById('btn-buscar').addEventListener('click', () => {
+      const termino = document.getElementById('buscar-historial').value;
+      cargarHistorial(termino);
+    });
+
+    // Inicializar navegación
+    document.querySelector('.nav-btn[data-seccion="garaje"]').click();
+  </script>
+</body>
+</html>
