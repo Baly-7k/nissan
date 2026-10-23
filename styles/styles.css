@@ -1,0 +1,49 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.oculto {
+  display: none !important;
+}
+
+.nav-btn {
+  color: #374151;
+  background: transparent;
+  text-align: left;
+}
+
+.nav-btn:hover {
+  background: #f3f4f6;
+}
+
+.nav-btn.active {
+  background: #fef2f2;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #dc2626;
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .min-h-screen.flex.bg-gray-100 {
+    display: block;
+  }
+
+  .sidebar nav {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+}
