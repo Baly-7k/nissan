@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión - Nissan Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100">
+  <main class="min-h-screen flex items-center justify-center bg-black px-4 py-8">
+    <section class="bg-white p-8 md:p-10 rounded-lg shadow-xl w-full max-w-md">
+      <div class="flex justify-center mb-8">
+        <h1 class="text-3xl font-black tracking-widest text-black uppercase">Nissan <span class="text-red-600">Admin</span></h1>
+      </div>
+      <form id="form-login">
+        <div class="mb-4">
+          <label for="email-login" class="block text-gray-700 text-sm font-bold mb-2">Correo Institucional</label>
+          <input type="email" id="email-login" required autocomplete="username" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+        </div>
+        <div class="mb-6">
+          <label for="pass-login" class="block text-gray-700 text-sm font-bold mb-2">Contraseña</label>
+          <input type="password" id="pass-login" required autocomplete="current-password" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+        </div>
+        <p id="login-error" class="hidden text-sm text-red-600 mb-4" role="alert">Correo o contraseña incorrectos.</p>
+        <button type="submit" id="btn-login" class="w-full bg-red-600 text-white font-bold py-3 px-4 rounded hover:bg-black transition-colors mb-4">Iniciar Sesión</button>
+        <div class="text-center">
+          <a href="recuperar.html" class="text-sm text-gray-500 hover:text-red-600 transition-colors">¿Olvidaste tu contraseña?</a>
+        </div>
+      </form>
+      <p class="text-xs text-gray-400 text-center mt-6">Demo: admin@nissan.com / 123456</p>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, get, set, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmoQlae7yfKRXxMl3vOyfey4K1kp4kPIw",
+      authDomain: "nissan-8b891.firebaseapp.com",
+      projectId: "nissan-8b891",
+      storageBucket: "nissan-8b891.firebasestorage.app",
+      messagingSenderId: "123985195949",
+      appId: "1:123985195949:web:9394df8c55885a274be724",
+      measurementId: "G-KTPXQ7S84C"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    const form = document.getElementById('form-login');
+    const errorP = document.getElementById('login-error');
+    const btnLogin = document.getElementById('btn-login');
+
+    // Función auxiliar para crear perfil de admin si no existe
+    async function asegurarPerfilAdmin(user, email) {
+      try {
+        const dbRef = ref(db);
+        const snapshot = await get(child(dbRef, 'administradores'));
+        let adminExiste = false;
+        if (snapshot.exists()) {
+          const administradores = snapshot.val();
+          for (const nombre in administradores) {
+            if (administradores[nombre].uid === user.uid) {
+              adminExiste = true;
+              break;
+            }
+          }
+        }
+        if (!adminExiste) {
+          const nombreCompleto = "Admin Nissan";
+          await set(ref(db, 'administradores/' + nombreCompleto), {
+            uid: user.uid,
+            imagen: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+            nombre: "Admin",
+            apellidoPaterno: "Nissan",
+            apellidoMaterno: "",
+            telefono: "",
+            correo: email,
+            estado: "activo",
+            fechaRegistro: Date.now(),
+            agenciaId: "lima"
+          });
+        }
+      } catch (dbError) {
+        console.warn("No se pudo verificar/crear el perfil de administrador en RTDB:", dbError);
+        // No bloqueamos el login por un fallo de la base de datos
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email-login').value.trim();
+      const pass = document.getElementById('pass-login').value;
+      errorP.classList.add('hidden');
+      btnLogin.disabled = true;
+      btnLogin.textContent = "Verificando...";
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+        const user = userCredential.user;
+        console.log("✅ Login exitoso. UID:", user.uid);
+
+        // Asegurar perfil en la base de datos (sin bloquear la redirección si falla)
+        await asegurarPerfilAdmin(user, email);
+
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        console.error("❌ Error de login:", error.code, error.message);
+
+        // Si el usuario no existe, intentamos crearlo (modo demo)
+        if (error.code === 'auth/user-not-found') {
+          try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+            const user = userCredential.user;
+            console.log("✅ Usuario creado automáticamente. UID:", user.uid);
+            await asegurarPerfilAdmin(user, email);
+            window.location.href = "dashboard.html";
+            return;
+          } catch (createError) {
+            console.error("❌ Error al crear usuario:", createError.code, createError.message);
+            if (createError.code === 'auth/weak-password') {
+              errorP.textContent = "La contraseña debe tener al menos 6 caracteres.";
+            } else if (createError.code === 'auth/email-already-in-use') {
+              errorP.textContent = "El correo ya está registrado con otra contraseña.";
+            } else {
+              errorP.textContent = "Error al crear usuario: " + createError.code;
+            }
+            errorP.classList.remove('hidden');
+            btnLogin.disabled = false;
+            btnLogin.textContent = "Iniciar Sesión";
+            return;
+          }
+        }
+
+        // Manejo detallado de errores de autenticación
+        let mensaje = "Correo o contraseña incorrectos.";
+        switch (error.code) {
+          case 'auth/wrong-password':
+            mensaje = "La contraseña es incorrecta. Verifica e intenta de nuevo.";
+            break;
+          case 'auth/invalid-credential':
+            mensaje = "Credenciales inválidas. El correo o la contraseña no coinciden. Si olvidaste tu contraseña, usa el enlace de abajo.";
+            break;
+          case 'auth/invalid-email':
+            mensaje = "El formato del correo no es válido.";
+            break;
+          case 'auth/user-disabled':
+            mensaje = "Esta cuenta ha sido deshabilitada. Contacta al administrador.";
+            break;
+          case 'auth/too-many-requests':
+            mensaje = "Demasiados intentos fallidos. Espera unos minutos o restablece tu contraseña.";
+            break;
+          case 'auth/network-request-failed':
+            mensaje = "Error de red. Verifica tu conexión a internet.";
+            break;
+          case 'auth/operation-not-allowed':
+            mensaje = "El método de inicio de sesión con correo/contraseña no está habilitado en Firebase.";
+            break;
+          default:
+            mensaje = "Error: " + error.code;
+        }
+        errorP.textContent = mensaje;
+        errorP.classList.remove('hidden');
+        btnLogin.disabled = false;
+        btnLogin.textContent = "Iniciar Sesión";
+      }
+    });
+  </script>
+</body>
+</html>
